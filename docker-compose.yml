@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  postgres:
+    image: 'postgres:9.5'
+    volumes:
+      - './volumes/postgres:/var/lib/postgresql/data'
+      - './volumes/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d'
+      - '/etc/passwd:/etc/passwd:ro'
+    environment:
+      #- POSTGRES_USER=odoo
+      - POSTGRES_USER=postgresadmin
+      - POSTGRES_PASSWORD=dbadmintommixe1
+    user: '1000:1000'
+  odoo:
+    build: ./build/odoo
+    command: start
+    ports:
+      - '127.0.0.1:8069:8069'
+    links:
+      - 'postgres:db'
+    volumes:
+    #  - './volumes/odoo/addons:/opt/odoo/additional_addons'
+      - './volumes/odoo/filestore:/opt/odoo/data/filestore'
+      - './volumes/odoo/sessions:/opt/odoo/data/sessions'
+      - './volumes/odoo/ssh:/opt/odoo/ssh:ro'
+    environment:
+    #  - ADDONS_PATH = /opt/odoo/additional_addons,/opt/odoo/sources/odoo/addons'
+      #- ADDONS_REPO=https://github.com/OCA/l10n-italy.git -b 10.0
+      #- FETCH_OCA_DEPENDENCIES=False
+      - TARGET_UID=1000
+      - ODOO_ADMIN_PASSWD=tommixe1
+      - ODOO_DB_USER=odoo
+      - ODOO_DB_PASSWORD=dbodootommixe1

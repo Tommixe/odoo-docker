@@ -1,0 +1,2 @@
+mkdir -p ./volumes/{postgres,odoo/filestore,odoo/sessions,odoo/addons,odoo/ssh}
+docker exec -it odoo_odoo_1 /bin/bash
